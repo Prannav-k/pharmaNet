@@ -255,7 +255,7 @@ class pharmaContract extends Contract {
          return existingShipment;
      }
 
-     async retailDrug(drugName, serialNo, retailerCRN, customerAadhar){
+     async retailDrug(ctx,drugName, serialNo, retailerCRN, customerAadhar){
         //validation invoker/retailer should be of role retailer
         const drugKey = Drug.createKey([drugName, serialNo]); 
         const existingDrug = await ctx.drugList
@@ -270,14 +270,14 @@ class pharmaContract extends Contract {
 
      }
 
-     //util
+     //util methods
      async getCompanyKeyFromCrn(ctx,companyCrn){
              //Fetch seller key
        const partialKey = Organization.createKey([companyCrn]);
        const companyObj = await ctx.organizationList
        .getOrganizationByPartialCompositeKey(partialKey)
        .catch(err => { throw new Error('Failed to fetch company. Company doesnt exist', err) });
-       const seller = companyObj.key;
+       return companyObj.key;
      }
 
      async updateShipmentInDrug(ctx,shipmentKey, assetId, buyer){

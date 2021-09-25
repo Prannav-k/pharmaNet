@@ -345,7 +345,7 @@ CLI_DELAY=5
 # channel name defaults to "pharmachannel"
 CHANNEL_NAME="pharmachannel"
 # version for updating chaincode
-VERSION_NO=7.0
+VERSION_NO=7.2
 # type of chaincode to be installed
 TYPE="basic"
 # use this as the default docker-compose yaml definition
