@@ -26,7 +26,7 @@ class Organization {
    * @returns {*}
    */
   static createKey(keyChunks) {
-    return keyChunks.map(chunk => JSON.stringify(chunk)).join(':');
+    return keyChunks.map(chunk => chunk).join(':');
   }
 
   /**

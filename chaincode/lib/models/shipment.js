@@ -1,42 +1,33 @@
 'use strict';
 
 
-class Drug {
+class Shipment {
   /**`
     * Constructor function
-    * @param drugObj
+    * @param shipmentObj
     */
-  constructor(drugObj) {
-    this.key = Drug.createKey([drugObj.drugName, drugObj.serialNo]);
-    Object.assign(this, drugObj);
+  constructor(shipmentObj) {
+    this.key = Shipment.createKey([ shipmentObj.buyerCRN,shipmentObj.drugName]);
+    Object.assign(this, shipmentObj);
   }
 
   /**
     * Create a new instance of this model
-    * @returns {Drug}
-    * @param drugObj {Object}
+    * @returns {Shipment}
+    * @param shipmentObj {Object}
     */
-  static createInstance(drugObj) {
-    return new Drug(drugObj);
+  static createInstance(shipmentObj) {
+    return new Shipment(shipmentObj);
   }
 
-  // /**
-  //  * Create a key string joined from different key parts
-  //  * @param keyChunks {Array}
-  //  * @returns {*}
-  //  */
-  // static createKey(keyChunks) {
-  //   return keyChunks.map(chunk => JSON.stringify(chunk)).join(':');
-  // }
-
-    /**
+  /**
    * Create a key string joined from different key parts
    * @param keyChunks {Array}
    * @returns {*}
    */
-     static createKey(keyChunks) {
-      return keyChunks.map(chunk => chunk).join(':');
-    }
+  static createKey(keyChunks) {
+    return keyChunks.map(chunk => chunk).join(':');
+  }
 
   /**
    * Create an array of key parts for this model instance
@@ -60,8 +51,8 @@ class Drug {
    */
   static fromBuffer(buffer) {
     const json = JSON.parse(buffer.toString());
-    return new Drug(json);
+    return new Shipment(json);
   }
 }
 
-module.exports = Drug;
+module.exports = Shipment;

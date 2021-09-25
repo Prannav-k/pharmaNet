@@ -42,6 +42,7 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.manufacturer.pharma-network.com:8051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.manufacturer.pharma-network.com:7051
       - CORE_PEER_LOCALMSPID=manufacturerMSP
+      - CORE_VM_DOCKER_ATTACHSTDOUT=true
     volumes:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/manufacturer.pharma-network.com/peers/peer0.manufacturer.pharma-network.com/msp:/etc/hyperledger/fabric/msp

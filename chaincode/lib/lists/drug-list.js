@@ -29,6 +29,22 @@ class DrugList {
     return Drug.fromBuffer(drugBuffer);
   }
 
+  async getDrugHistory(drugKey){
+    const drugCompositeKey = this.ctx.stub.createCompositeKey(this.name, drugKey.split(':'));
+    let iterator = await this.ctx.stub.getHistoryForKey(drugCompositeKey);
+    let result = [];
+    let res = await iterator.next();
+    while (!res.done) {
+      if (res.value) {
+        console.info(`found state update with value: ${res.value.value.toString('utf8')}`);
+        const obj = Drug.fromBuffer(drugBuffer);;
+        result.push(obj);
+      }
+      res = await iterator.next();
+    }
+    await iterator.close();
+    return res;
+  }
   /**
    * Returns the Property model stored in blockchain identified by the partial key
    * @param drugKey

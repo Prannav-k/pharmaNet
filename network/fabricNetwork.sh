@@ -166,6 +166,11 @@ function installChaincode() {
   docker exec cli scripts/installChaincode.sh "$CHANNEL_NAME" "$CLI_DELAY" "$LANGUAGE" "$VERSION_NO" "$TYPE"
 }
 
+function instantiateChaincode() {
+  checkPrereqs
+  docker exec cli scripts/instantiateChaincode.sh "$CHANNEL_NAME" "$CLI_DELAY" "$LANGUAGE" "$VERSION_NO" "$TYPE"
+}
+
 # Tear down running network
 function networkDown() {
   # stop all containers
@@ -340,7 +345,7 @@ CLI_DELAY=5
 # channel name defaults to "pharmachannel"
 CHANNEL_NAME="pharmachannel"
 # version for updating chaincode
-VERSION_NO=3.0
+VERSION_NO=7.0
 # type of chaincode to be installed
 TYPE="basic"
 # use this as the default docker-compose yaml definition
@@ -369,7 +374,9 @@ elif [ "$MODE" == "update" ]; then
 elif [ "$MODE" == "install" ]; then
   EXPMODE="Installing chaincode"
 elif [ "$MODE" == "generate" ]; then
-  EXPMODE="Generating certs and genesis block"
+  EXPMODE="Generating certs and genesis block" 
+elif [ "$MODE" == "instantiate" ]; then
+  EXPMODE="Insstalling chaincode"   
 else
   printHelp
   exit 1
@@ -431,6 +438,8 @@ elif [ "${MODE}" == "update" ]; then ## Run the composer setup commands
   updateChaincode
 elif [ "${MODE}" == "install" ]; then ## Run the composer setup commands
   installChaincode
+elif [ "${MODE}" == "instantiate" ]; then ## Run the composer setup commands
+  instantiateChaincode
 else
   printHelp
   exit 1

@@ -155,7 +155,7 @@ services:
       - CORE_TLS_CLIENT_CERT_PATH=/opt/gopath/src/crypto/peerOrganizations/manufacturer.pharma-network.com/users/Admin@manufacturer.pharma-network.com/tls/client.crt
       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/crypto/peerOrganizations/manufacturer.pharma-network.com/users/Admin@manufacturer.pharma-network.com/tls/ca.crt
     working_dir: /opt/gopath/src/chaincode
-    command: /bin/bash -c 'sleep 6000000'
+    command: /bin/sh -c 'sleep 6000000'
     volumes:
       - /var/run/:/host/var/run/
       - ./../chaincode:/opt/gopath/src/chaincode
