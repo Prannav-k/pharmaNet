@@ -133,6 +133,16 @@ class pharmaContract extends Contract {
         return existingDrug;
     }
 
+    async viewDrugHistory (ctx, drugName, serialNo){
+        const drugKey = Drug.createKey([drugName, serialNo]); 
+        console.log('constructed drug key is ',drugKey);
+        const existingDrug = await ctx.drugList
+        .getDrug(drugKey)
+        .catch(err => {throw new Error('Faild to fetch. Drug doesnt exist')});
+        
+        return await ctx.drugList.getDrugHistory(drugKey);
+    }
+
     async createPo(ctx,buyerCRN, sellerCRN, drugName, quantity){
        //key - buyer andcrn and drug name
        const poKey = Po.createKey([buyerCRN, drugName]); 
@@ -303,6 +313,8 @@ class pharmaContract extends Contract {
         await ctx.drugList.addDrug(drugInstance);
         return drugInstance;
     }
+
+  
    
     
 }
