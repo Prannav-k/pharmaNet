@@ -33,4 +33,7 @@ async function iterateResult(iterator) {
   }
 }
 
+
+
+
 module.exports = { validateUserInitiator, validatemanufacturerInitiator, iterateResult };
