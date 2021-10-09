@@ -1,5 +1,5 @@
 'use strict';
-const helper = require('./contractHelper');
+const helper = require('../utils/contractHelper');
 
 async function main(org, fabricUserName, channelName, txId) {
 

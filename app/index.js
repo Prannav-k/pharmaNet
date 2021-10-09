@@ -5,26 +5,31 @@ const port = 4000;
 const logger = require('morgan');
 
 // Import all function modules
-const addNewUser = require('./utils/addNewUser');
-const getUserDetails = require('./utils/getUserDetails');
+const addNewUser = require('./utilsO/addNewUser');
+const getUserDetails = require('./utilsO/getUserDetails');
 const addToWallet = require('./utils/addToWallet');
-const updateUserDetails = require('./utils/updateUserDetails');
-const addNewTest = require('./utils/addNewTest');
-const updateTestDetails = require("./utils/updateTestDetails")
-const getTestDetails = require("./utils/getTestDetails")
-const getPatientTestDetails = require("./utils/getPatientTestDetails")
-const requestPrice = require("./utils/requestPrice")
-const getAllPriceRequests = require("./utils/getAllPriceRequests")
-const getPriceRequest = require("./utils/getPriceRequest")
-const approvePriceRequest = require("./utils/approvePriceRequest")
-const getAllTestData = require("./utils/getAllTestData")
-const getAllUsersData = require("./utils/getAllUsersData")
-const registerUser = require("./utils/registerUser")
+const updateUserDetails = require('./utilsO/updateUserDetails');
+const addNewTest = require('./utilsO/addNewTest');
+const updateTestDetails = require("./utilsO/updateTestDetails")
+const getTestDetails = require("./utilsO/getTestDetails")
+const getPatientTestDetails = require("./utilsO/getPatientTestDetails")
+const requestPrice = require("./utilsO/requestPrice")
+const getAllPriceRequests = require("./utilsO/getAllPriceRequests")
+const getPriceRequest = require("./utilsO/getPriceRequest")
+const approvePriceRequest = require("./utilsO/approvePriceRequest")
+const getAllTestData = require("./utilsO/getAllTestData")
+const getAllUsersData = require("./utilsO/getAllUsersData")
+const registerUser = require("./utilsO/registerUser")
 const registerAdmin = require("./utils/registerAdmin")
-const revokeUser = require("./utils/revokeUser")
+const revokeUser = require("./utilsO/revokeUser")
 const getTransactionById = require("./utils/getTransactionById")
-const getDrugCurrentState = require("./utils/pharmaGetDrugCurrentState")
-
+const getDrugCurrentState = require("./utils/getDrugCurrentState")
+const registerCompany = require("./utils/registerCompany")
+const createDrug = require("./utils/createDrug")
+const createPo = require("./utils/createPo")
+const createShipment = require("./utils/createShipment")
+const updateShipment = require("./utils/updateShipment")
+const retailDrug = require("./utils/retailDrug")
 
 // Define Express app settings
 app.use(cors());
@@ -66,6 +71,322 @@ app.get('/', (req, res) => res.send('Hello'));
         console.log("Getting drug current status");
         // Blockchain Request
         data = await getDrugCurrentState.execute(org, fabricUserName, channelName, chainCodeName, smartContractName, drugName,drugSerialNumber )
+            
+        // Send Response
+        result = {
+            success: true,
+            data: data
+        };
+
+        res.json(result);
+        
+    } catch (error) {
+        result = {
+            success: false,
+            error: error.message
+        };
+        res.status(500).send(result);
+    }
+
+});
+
+app.post('/:org/registerCompany',async (req, res) => {
+
+    try {
+
+        // Reference
+        let fabricUserName 
+        let channelName
+        let chainCodeName 
+        let smartContractName
+        let org 
+
+        let companyCRN
+        let companyName
+        let location
+        let organisationRole
+        var result
+
+        
+        // Parse Request
+        fabricUserName = req.body.fabricUserName
+        channelName = req.body.channelName
+        chainCodeName = req.body.chainCodeName
+        smartContractName = req.body.smartContractName
+        org = req.params.org
+
+        companyCRN = req.body.companyCRN
+        companyName = req.body.companyName
+        location = req.body.location,
+        organisationRole = req.body.organisationRole
+
+        console.log("Registering org");
+        // Blockchain Request
+        data = await registerCompany.execute(org, fabricUserName, channelName, chainCodeName, smartContractName,
+            companyCRN, companyName, location, organisationRole
+            )
+            
+        // Send Response
+        result = {
+            success: true,
+            data: data
+        };
+        res.json(result);
+        
+    } catch (error) {
+        result = {
+            success: false,
+            error: error.message
+        };
+        res.status(500).send(result);
+    }
+});
+
+app.post('/:org/createDrug',async (req, res) => {
+    try {
+
+        // Reference
+        let fabricUserName 
+        let channelName 
+        let chainCodeName 
+        let smartContractName
+        let org 
+
+        var result
+        let data
+
+        let drugName
+        let drugSerialNumber
+        let mfgDate
+        let expDate
+        let manufacturer
+        
+        // Parse Request
+        fabricUserName = req.body.fabricUserName
+        channelName = req.body.channelName
+        chainCodeName = req.body.chainCodeName
+        smartContractName = req.body.smartContractName
+        org = req.params.org
+
+        drugName = req.body.drugName
+        drugSerialNumber = req.body.drugSerialNumber
+        mfgDate = req.body.mfgDate
+        expDate = req.body.expDate
+        manufacturer = req.body.manufacturer
+        //shipment = req.body.shipment
+        
+        console.log("Getting drug current status");
+        // Blockchain Request
+        data = await createDrug.execute(org, fabricUserName, channelName, chainCodeName, smartContractName, 
+            drugName,
+            drugSerialNumber,
+            mfgDate,
+            expDate,
+            manufacturer
+             )
+            
+        // Send Response
+        result = {
+            success: true,
+            data: data
+        };
+        res.json(result);
+        
+    } catch (error) {
+        result = {
+            success: false,
+            error: error.message
+        };
+        res.status(500).send(result);
+    }
+
+});
+
+
+app.post('/:org/createPo',async (req, res) => {
+    try {
+
+        // Reference
+        let fabricUserName 
+        let channelName 
+        let chainCodeName 
+        let smartContractName
+        let org 
+
+        var result
+        let data
+      
+        let buyerCRN
+        let sellerCRN
+        let drugName
+        let quantity
+
+        // Parse Request
+        fabricUserName = req.body.fabricUserName
+        channelName = req.body.channelName
+        chainCodeName = req.body.chainCodeName
+        smartContractName = req.body.smartContractName
+        org = req.params.org
+
+        buyerCRN = req.body.buyerCRN
+        sellerCRN = req.body.sellerCRN
+        drugName = req.body.drugName
+        quantity =  req.body.quantity
+        
+        console.log("Getting drug current status");
+        // Blockchain Request
+        data = await createPo.execute(org, fabricUserName, channelName, chainCodeName, smartContractName, buyerCRN, sellerCRN, drugName, quantity)
+            
+        // Send Response
+        result = {
+            success: true,
+            data: data
+        };
+        res.json(result);
+        
+    } catch (error) {
+        result = {
+            success: false,
+            error: error.message
+        };
+        res.status(500).send(result);
+    }
+
+});
+
+app.post('/:org/createShipment',async (req, res) => {
+    try {
+
+        // Reference
+        let fabricUserName 
+        let channelName 
+        let chainCodeName 
+        let smartContractName
+        let org 
+
+        var result
+        let data
+      
+        let buyerCRN
+        let drugName
+        let listOfAssets
+        let transporterCRN
+
+        // Parse Request
+        fabricUserName = req.body.fabricUserName
+        channelName = req.body.channelName
+        chainCodeName = req.body.chainCodeName
+        smartContractName = req.body.smartContractName
+        org = req.params.org
+
+        buyerCRN = req.body.buyerCRN
+        drugName = req.body.drugName
+        listOfAssets =  req.body.listOfAssets
+        transporterCRN = req.body.transporterCRN
+        
+        console.log("Creating shipment");
+        // Blockchain Request
+        data = await createShipment.execute(org, fabricUserName, channelName, chainCodeName, smartContractName,buyerCRN, drugName, listOfAssets, transporterCRN)
+            
+        // Send Response
+        result = {
+            success: true,
+            data: data
+        };
+        res.json(result);
+        
+    } catch (error) {
+        result = {
+            success: false,
+            error: error.message
+        };
+        res.status(500).send(result);
+    }
+
+});
+
+app.put('/:org/updateShipment',async (req, res) => {
+    try {
+
+        // Reference
+        let fabricUserName 
+        let channelName 
+        let chainCodeName 
+        let smartContractName
+        let org 
+
+        var result
+        let data
+      
+        let buyerCRN
+        let drugName
+        let transporterCRN
+
+        // Parse Request
+        fabricUserName = req.body.fabricUserName
+        channelName = req.body.channelName
+        chainCodeName = req.body.chainCodeName
+        smartContractName = req.body.smartContractName
+        org = req.params.org
+
+        buyerCRN = req.body.buyerCRN
+        drugName = req.body.drugName
+        transporterCRN = req.body.transporterCRN
+        
+        console.log("Updating shipment");
+        // Blockchain Request
+        data = await updateShipment.execute(org, fabricUserName, channelName, chainCodeName, smartContractName,buyerCRN, drugName, transporterCRN)
+            
+        // Send Response
+        result = {
+            success: true,
+            data: data
+        };
+        res.json(result);
+        
+    } catch (error) {
+        result = {
+            success: false,
+            error: error.message
+        };
+        res.status(500).send(result);
+    }
+
+});
+
+app.put('/:org/retailDrug',async (req, res) => {
+    try {
+
+        // Reference
+        let fabricUserName 
+        let channelName 
+        let chainCodeName 
+        let smartContractName
+        let org 
+
+        var result
+        let data
+      
+        let drugName
+        let serialNo
+        let retailerCRN
+        let customerAadhar
+
+        // Parse Request
+        fabricUserName = req.body.fabricUserName
+        channelName = req.body.channelName
+        chainCodeName = req.body.chainCodeName
+        smartContractName = req.body.smartContractName
+        org = req.params.org
+
+        serialNo = req.body.serialNo
+        drugName = req.body.drugName
+        retailerCRN = req.body.retailerCRN
+        customerAadhar = req.body.customerAadhar
+
+        console.log("Retailing drug");
+        // Blockchain Request
+        data = await retailDrug.execute(org, fabricUserName, channelName, chainCodeName, smartContractName,drugName, serialNo, retailerCRN, customerAadhar)
             
         // Send Response
         result = {

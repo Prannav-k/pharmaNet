@@ -60,8 +60,14 @@ class pharmaContract extends Contract {
              hierarchyKey: this.getEntityHirarchy(organisationRole),
         };
 
+        //TODO debug 
+        console.log("Org is ",organizationObj)
+
         const orgInstance = Organization.createInstance(organizationObj);
+        console.log("Org orgInstance is ",organizationObj)
+
         await ctx.organizationList.addOrganization(orgInstance);
+        console.log("org Created")
         return orgInstance;
     }
 

@@ -7,6 +7,8 @@ let gateway;
 
 async function getContractInstance(org, fabricUserName, channelName, chainCodeName, smartContractName) {
 	
+	console.log('Fetching contract instance using ', org, fabricUserName, channelName, chainCodeName, smartContractName);
+
 	// A gateway defines which peer is used to access Fabric network
 	// It uses a common connection profile (CCP) to connect to a Fabric Peer
 	// A CCP is defined manually in file connection-profile-iit.yaml
